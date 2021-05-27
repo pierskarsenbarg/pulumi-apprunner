@@ -1,47 +1,35 @@
 {
-    "name": "xyz",
+    "name": "apprunner",
     "resources": {
-        "xyz:index:StaticPage": {
+        "apprunner:index:App": {
             "isComponent": true,
             "inputProperties": {
-                "indexContent": {
-                    "type": "string",
-                    "description": "The HTML content for index.html."
+                "pathToDocker": {
+                  "type": "string",
+                  "description": "The path to the folder containing your Dockerfile."
                 }
-            },
-            "requiredInputs": [
-                "indexContent"
-            ],
-            "properties": {
-                "bucket": {
-                    "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                    "description": "The bucket resource."
-                },
-                "websiteUrl": {
-                    "type": "string",
-                    "description": "The website URL."
-                }
-            },
-            "required": [
-                "bucket",
-                "websiteUrl"
-            ]
+              },
+            "requiredInputs": ["pathToDocker"],
+            "properties": {},
+            "required": []
         }
     },
     "language": {
         "csharp": {
             "packageReferences": {
                 "Pulumi": "3.*",
-                "Pulumi.Aws": "4.*"
+                "Pulumi.Aws": "4.*",
+                "Pulumi.Docker": "3.*"
             }
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+            "importBasePath": "github.com/pierskarsenbarg/pulumi-apprunner/sdk/go/apprunner"
         },
         "nodejs": {
             "dependencies": {
-                "@pulumi/aws": "^4.0.0"
+                "@pulumi/aws": "^4.0.0",
+                "@pulumi/docker": "^3.0.0"
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
@@ -50,7 +38,8 @@
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-aws": ">=4.0.0,<5.0.0"
+                "pulumi-aws": ">=4.0.0,<5.0.0",
+                "pulumi-docker": ">=3.0.0,<4.0.0"
             }
         }
     }
