@@ -25,7 +25,7 @@ export class Provider implements provider.Provider {
 
         // TODO: Add support for additional component resources here.
         switch (type) {
-            case "apprunner:index:App":
+            case "apprunner:index:service":
                 return await constructAppRunner(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);
@@ -43,7 +43,7 @@ async function constructAppRunner(name: string, inputs: pulumi.Inputs,
     return {
         urn: appRunner.urn,
         state: {
-            
+            url: appRunner.url
         },
     };
 }

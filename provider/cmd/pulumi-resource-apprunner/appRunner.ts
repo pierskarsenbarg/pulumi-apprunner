@@ -20,9 +20,10 @@ export interface AppRunnerArgs {
   pathToDocker: string;
 }
 
-const typeToken = "apprunner:index:AppRunner";
+const typeToken = "apprunner:index:service";
 
 export class AppRunner extends pulumi.ComponentResource {
+  public readonly url: pulumi.Output<string>;
   constructor(
     name: string,
     args: AppRunnerArgs,
@@ -91,7 +92,7 @@ export class AppRunner extends pulumi.ComponentResource {
     });
 
     const image = new docker.Image(
-      "myapp",
+      `${name}-appimage`,
       {
         imageName: repo.repositoryUrl,
         build: "./app",
@@ -99,5 +100,28 @@ export class AppRunner extends pulumi.ComponentResource {
       },
       { parent: this }
     );
+
+    const app = new aws.apprunner.Service(`${name}-application`, {
+      sourceConfiguration: {
+        authenticationConfiguration: {
+          accessRoleArn: role.arn
+        },
+        imageRepository: {
+          imageRepositoryType: "ECR",
+          imageIdentifier: image.imageName,
+          imageConfiguration: {
+            port: "80"
+          }
+        },
+        autoDeploymentsEnabled: true
+      },
+      serviceName: name
+    })
+
+    this.url = app.serviceUrl;
+
+    this.registerOutputs({
+      url: this.url
+    })
   }
 }

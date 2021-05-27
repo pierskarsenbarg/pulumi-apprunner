@@ -1,7 +1,7 @@
 {
     "name": "apprunner",
     "resources": {
-        "apprunner:index:App": {
+        "apprunner:index:service": {
             "isComponent": true,
             "inputProperties": {
                 "pathToDocker": {
@@ -10,17 +10,23 @@
                 }
               },
             "requiredInputs": ["pathToDocker"],
-            "properties": {},
-            "required": []
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "The url of the apprunner service"
+                }
+            },
+            "required": ["url"]
         }
     },
     "language": {
         "csharp": {
+            "packageName": "PiersKarsenbarg.AppRunner",
             "packageReferences": {
                 "Pulumi": "3.*",
                 "Pulumi.Aws": "4.*",
                 "Pulumi.Docker": "3.*"
-            }
+            }  
         },
         "go": {
             "generateResourceContainerTypes": true,
@@ -33,14 +39,16 @@
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
-            }
+            },
+            "packageName": "@pierskarsenbarg/apprunner"
         },
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
                 "pulumi-aws": ">=4.0.0,<5.0.0",
                 "pulumi-docker": ">=3.0.0,<4.0.0"
-            }
+            },
+            "packageName": "pierskarsenbarg-apprunner"
         }
     }
 }
